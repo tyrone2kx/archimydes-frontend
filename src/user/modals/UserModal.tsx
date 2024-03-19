@@ -39,9 +39,9 @@ const UserModal: React.FC<Props> = ({
 
   const closeModal = () => {
     if (!(createHandler.loading || editHandler.loading)) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
   return (
     <Modal
@@ -58,9 +58,15 @@ const UserModal: React.FC<Props> = ({
           }}
           onSubmit={(values) => {
             if (user) {
-              editHandler.editUser({ id: user.id, ...values }, callback);
+              editHandler.editUser(
+                { ...values, id: user.id, email: values.email.toLowerCase() },
+                callback
+              );
             } else {
-              createHandler.addNewUser(values, callback);
+              createHandler.addNewUser(
+                { ...values, email: values.email.toLowerCase() },
+                callback
+              );
             }
           }}
           validationSchema={Yup.object({
@@ -87,9 +93,13 @@ const UserModal: React.FC<Props> = ({
                 }))}
               />
 
-
-              <div className="p-4 flex items-center justify-center" onClick={closeModal}>
-                <p className="text-[#333333] text-xs font-semibold cursor-pointer">Cancel</p>
+              <div
+                className="p-4 flex items-center justify-center"
+                onClick={closeModal}
+              >
+                <p className="text-[#333333] text-xs font-semibold cursor-pointer">
+                  Cancel
+                </p>
               </div>
               <Button
                 label={user ? "Update User" : "Create User"}
